@@ -1,0 +1,32 @@
+{% load staticfiles %}
+
+<link href="{% static "index.css" %}" type="text/css" rel="stylesheet"/>
+
+{% if author_name %}
+    <p>Logged in as {{author_name}}</p>
+    <form class="logout-form" action="logout/" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Logout" />
+    </form>
+    <div class="nav-bar">
+        <ul class="tablist">
+            <li id="current">
+              <a href="threads.html" target="contentFrame">Threads</a>
+            </li>
+            <li>
+              <a href="authors.html" target="contentFrame">Authors</a>
+            </li>
+        </ul>
+    </div>
+    <div id="content">
+          <iframe src="{{ current_page }}" name="contentFrame"></iframe>
+    </div>
+{% else %}
+    <p>Not Logged In</p>
+    <form class="login-form" action="login/" method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Login" />
+    </form>
+{% endif %}

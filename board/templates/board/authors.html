@@ -1,0 +1,29 @@
+<p>Authors</p>
+{% load staticfiles %}
+<link href="{% static "authors.css" %}" type="text/css" rel="stylesheet"/>
+
+{% if author_list %}
+
+
+
+<table>
+    <tr>
+        <th>Author Name</th>
+        <th></th>
+    </tr>
+{% for author in author_list %} 
+    <tr> 
+        <td>{{ author.name }}</td>
+        {% if author.name == "anonymous" %}
+            <td></td>
+        {% else %}
+            <td><a href="{% url 'delete_author' author_id=author.pk %}">Delete</a></td> 
+        {% endif %}
+    </tr> 
+    {% endfor %} 
+</table>
+
+{% else %}
+    <p>No Authors Available</p>
+{% endif %}
+

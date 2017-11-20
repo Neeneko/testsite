@@ -1,0 +1,30 @@
+{% load staticfiles %}
+<link href="{% static "threads.css" %}" type="text/css" rel="stylesheet"/>
+
+<a href="{% url 'threads' %}">Back To Thread List</a></td> 
+
+
+<h2>{{ title }} ({{ author }})<h2>
+<h3>{{ desc }}<h3>
+
+<div>
+    <form action="{% url 'create_comment' thread_id=thread_id %} " method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Post Comment" />
+    </form>
+</div>
+
+{% if comment_list %}
+    {% for comment in comment_list %} 
+        <div>
+            <h4> {{comment.author.name}} - {{comment.created|date:"D d M Y" }},{{ comment.created|time:"H:i" }}</h4>
+            <p class='comment'>{{comment.text}}</p>
+        </div>
+
+    {% endfor %} 
+
+{% else %}
+<p>No Comments Found</p>
+
+{% endif %}

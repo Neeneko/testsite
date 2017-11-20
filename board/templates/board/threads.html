@@ -1,0 +1,50 @@
+{% load staticfiles %}
+
+<script src="https://d3js.org/d3.v4.min.js"></script>
+<script src="{% static "threads.js" %}"></script>
+<link href="{% static "threads.css" %}" type="text/css" rel="stylesheet"/>
+
+
+<div id="start-create-thread-form">
+    <button type="button" onclick="show_create_thread_form()">Create New Topic</button>
+</div>
+
+<div id="in-create-thread-form" class="hidden">
+    <form class="create-thread-form" action="{% url 'create_thread' %} " method="post">
+        {% csrf_token %}
+        {{ form }}
+        <input type="submit" value="Create" />
+    </form>
+    <button type="button" onclick="done_create_thread_form()">Cancel New Topic</button>
+</div>
+
+
+
+{% if thread_list %}
+<table>
+    <tr>
+        <th>Author Name</th>
+        <th>Thread Topic</th>
+        <th>Date Created</th>
+        <th></th>
+    </tr>
+{% for thread in thread_list %} 
+    <tr> 
+        <td>{{ thread.author.name }}</td>
+        <td><a href="{% url 'view_thread' thread_id=thread.pk %}">{{ thread.title }}</a></td> 
+        <td>{{ thread.created|date:"D d M Y" }},{{ thread.created|time:"H:i" }}</td>
+        {% if thread.author.name == author_name %}
+            <td><a href="{% url 'delete_thread' thread_id=thread.pk %}">Delete</a></td> 
+        {% else %}
+            <td></td>
+        {% endif %}
+    </tr> 
+    {% endfor %} 
+</table>
+
+
+{% else %}
+
+<p>No Threads Found</p>
+{% endif %}
+
